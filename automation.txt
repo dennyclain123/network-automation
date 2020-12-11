@@ -1,0 +1,38 @@
+---
+- name: Manage GNS3 devices
+  hosts: R1
+  gather_facts: false
+  connection: local
+
+  tasks:
+    - name: interface giga 1/0
+      ios_config:
+        parents: int g1/0
+        lines:
+          - no shut
+          - ip address 10.0.0.1 255.255.255.0
+    - name: interface giga 2/0
+      ios_config:
+        parents: int g2/0
+        lines:
+          - no shut
+          - ip address 30.0.0.1 255.255.255.252
+    - name: enable ospf
+      ios_config:
+        parents: router ospf 1
+        lines:
+          - network 10.0.0.0 0.0.0.255 area 0
+          - network 30.0.0.0 0.0.0.3 area 0
+          - router-id 0.0.0.1
+          - auto-cost reference-bandwidth 10000
+         
+    - name: save config
+      ios_command:
+         commands:
+              - wr mem
+
+      register: print_output
+
+    -  debug: var=print_output
+
+

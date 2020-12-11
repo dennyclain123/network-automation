@@ -1,0 +1,8 @@
+feature:install odl-restconf odl-l2switch-switch odl-mdsal-apidocs odl-dlux-core
+feature:install odl:dlux:all
+
+ export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+./bin/karaf
+
+
+sudo mn --controller=remote,ip=192.168.99.197 --topo=linear,5 --mac
